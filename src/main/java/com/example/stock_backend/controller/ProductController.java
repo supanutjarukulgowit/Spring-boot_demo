@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock_backend.Model.Product;
@@ -47,6 +49,7 @@ public class ProductController {
 //		return name;
 //	}
 
+	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping()
 	public Product addProduct(@RequestBody Product product) {
 		Product data = new Product(counter.incrementAndGet(), product.getName(), product.getImage(), product.getPrice(),
@@ -70,6 +73,7 @@ public class ProductController {
 
 	}
 
+	@ResponseStatus(HttpStatus.NO_CONTENT)
 	@DeleteMapping("/{id}")
 	public void deleteProduct(@PathVariable long id) {
 		Product data;
