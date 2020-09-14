@@ -1,4 +1,4 @@
-package com.example.stock_backend.controller;
+package com.example.stock_backend.controller.api;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -16,7 +16,9 @@ import org.springframework.web.bind.annotation.ResponseStatus;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.example.stock_backend.Model.Product;
+import com.example.stock_backend.controller.request.ProductRequest;
 import com.example.stock_backend.exception.ProductNotFoundException;
+import com.example.stock_backend.service.StorageService;
 
 @RestController // for @Controller and @ResponseBody
 @RequestMapping("/product")
@@ -24,6 +26,12 @@ public class ProductController {
 
 	private final AtomicLong counter = new AtomicLong();
 	private List<Product> products = new ArrayList<>();
+	private StorageService storageService;
+
+	ProductController(StorageService storageService) {
+		this.storageService = storageService;
+
+	}
 
 //	@RequestMapping(path = "/say", method = RequestMethod.GET)
 	@GetMapping()
@@ -51,9 +59,10 @@ public class ProductController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping()
-	public Product addProduct(@RequestBody Product product) {
-		Product data = new Product(counter.incrementAndGet(), product.getName(), product.getImage(), product.getPrice(),
-				product.getStock());
+	public Product addProduct(ProductRequest productRequest) {
+		String fileName = storageService.store(productRequest.getImage());
+		Product data = new Product(counter.incrementAndGet(), productRequest.getName(), fileName,
+				productRequest.getPrice(), productRequest.getStock());
 		products.add(data);
 		return data;
 	}

@@ -1,4 +1,4 @@
-package com.example.stock_backend.controller;
+package com.example.stock_backend.controller.api;
 
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Component;
