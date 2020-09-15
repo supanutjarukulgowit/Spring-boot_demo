@@ -26,4 +26,10 @@ public class ExceptionAdvice {
 	String handleMaxUploadSizeExcaption(MaxUploadSizeExceededException ex) {
 		return "Maximum upload size exeeded";
 	}
+
+	@ExceptionHandler
+	@ResponseStatus(HttpStatus.BAD_REQUEST) // for http status 500
+	String handleValidationExcaption(ValidationException ex) {
+		return ex.getMessage();
+	}
 }

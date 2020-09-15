@@ -4,7 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicLong;
 
+import javax.validation.Valid;
+
 import org.springframework.http.HttpStatus;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -18,10 +21,12 @@ import org.springframework.web.bind.annotation.RestController;
 import com.example.stock_backend.Model.Product;
 import com.example.stock_backend.controller.request.ProductRequest;
 import com.example.stock_backend.exception.ProductNotFoundException;
+import com.example.stock_backend.exception.ValidationException;
 import com.example.stock_backend.service.StorageService;
 
 @RestController // for @Controller and @ResponseBody
 @RequestMapping("/product")
+//@CrossOrigin
 public class ProductController {
 
 	private final AtomicLong counter = new AtomicLong();
@@ -59,7 +64,14 @@ public class ProductController {
 
 	@ResponseStatus(HttpStatus.CREATED)
 	@PostMapping()
-	public Product addProduct(ProductRequest productRequest) {
+	public Product addProduct(@Valid ProductRequest productRequest, BindingResult bindingResult) {
+
+		if (bindingResult.hasErrors()) {
+			bindingResult.getFieldErrors().stream().forEach(fieldError -> {
+				throw new ValidationException(fieldError.getField() + ": " + fieldError.getDefaultMessage());
+			});
+		}
+
 		String fileName = storageService.store(productRequest.getImage());
 		Product data = new Product(counter.incrementAndGet(), productRequest.getName(), fileName,
 				productRequest.getPrice(), productRequest.getStock());
