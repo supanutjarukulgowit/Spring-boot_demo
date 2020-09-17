@@ -44,7 +44,7 @@ public class ProductController {
 //	@RequestMapping(path = "/say", method = RequestMethod.GET)
 	@GetMapping()
 	public List<Product> getProducts() {
-		log.error("ERROR HAPPENED");
+		log.info("getProducts called");
 		return products;
 	}
 
