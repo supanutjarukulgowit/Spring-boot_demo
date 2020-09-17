@@ -24,9 +24,12 @@ import com.example.stock_backend.exception.ProductNotFoundException;
 import com.example.stock_backend.exception.ValidationException;
 import com.example.stock_backend.service.StorageService;
 
+import lombok.extern.slf4j.Slf4j;
+
 @RestController // for @Controller and @ResponseBody
 @RequestMapping("/product")
 //@CrossOrigin
+@Slf4j // for Logger
 public class ProductController {
 
 	private final AtomicLong counter = new AtomicLong();
@@ -41,6 +44,7 @@ public class ProductController {
 //	@RequestMapping(path = "/say", method = RequestMethod.GET)
 	@GetMapping()
 	public List<Product> getProducts() {
+		log.error("ERROR HAPPENED");
 		return products;
 	}
 
