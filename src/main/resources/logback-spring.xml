@@ -36,12 +36,12 @@
 	</appender>
 
 	<!-- trace => debug => info => warn => error -->
-	<root level="warn">
+	<root level="info">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</root>
 
-	<logger name="com.example.stock_backend" level="info" additivity="false">
+	<logger name="com.codemobiles" level="info" additivity="false">
 		<appender-ref ref="RollingFile" />
 		<appender-ref ref="Console" />
 	</logger>
